@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+/*Abstracts*/
+@import "scss/abstract/_abstracts-dir";
+
+/*Vendor*/
+@import "scss/vendor/_vendors-dir";
+
+/*Base Styles*/
+@import "scss/base/_base-dir";

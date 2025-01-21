@@ -1,0 +1,18 @@
+<div *ngIf="employees.length === 0" class="no-data-container">
+  <img src="assets/images/no-data-found.png" alt="No employee records found" />
+</div>
+
+<div *ngIf="employees.length > 0" class="data-container">
+  <!-- Employee List Display Logic -->
+</div>
+
+<div class="fab-container">
+  <button
+    mat-fab
+    color="primary"
+    class="button-primary"
+    (click)="addEmployee()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

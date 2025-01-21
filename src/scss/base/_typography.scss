@@ -1,0 +1,49 @@
+// variables for fonts
+$default-spacing: 0.5px;
+$titleSize: 16px;
+$titleHeight: 20px;
+$subtitleSize: 14px;
+$subtitleHeight: 20px;
+$tinySize: 12px;
+$tinyHeight: 20px;
+$boldweight: 400;
+$gigaweight: 500;
+
+$boldfamily: "Roboto";
+
+
+
+// web fonts
+
+@mixin title-bold {
+  font-weight: $boldweight !important;
+  font-family: $boldfamily !important;
+  font-size: $titleSize !important;
+  letter-spacing: $default-spacing !important;
+  line-height: $titleHeight !important;
+}
+
+
+@mixin giga-bold {
+  font-weight: $gigaweight !important;
+  font-family: $boldfamily !important;
+  font-size: $titleSize !important;
+  letter-spacing: $default-spacing !important;
+  line-height: $titleHeight !important;
+}
+
+@mixin subtitle-medium {
+  font-weight: $boldweight !important;
+  font-family: $boldfamily !important;
+  font-size: $subtitleSize !important;
+  letter-spacing: $default-spacing !important;
+  line-height: $subtitleHeight !important;
+}
+
+@mixin tiny-medium {
+  font-weight: $boldweight !important;
+  font-family: $boldfamily !important;
+  font-size: $tinySize !important;
+  letter-spacing: $default-spacing !important;
+  line-height: $tinyHeight !important;
+}
