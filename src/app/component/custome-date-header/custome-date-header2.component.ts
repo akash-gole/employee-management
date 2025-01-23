@@ -1,24 +1,31 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Inject, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  inject,
+  OnDestroy,
+} from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { ShareDataService } from '../../services/share-data.service';
+import { MatCalendar } from '@angular/material/datepicker';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
   MatDateFormats,
 } from '@angular/material/core';
-import { MatCalendar } from '@angular/material/datepicker';
-import { Subject, takeUntil } from 'rxjs';
-import { ShareDataService } from '../../services/share-data.service';
 
 @Component({
   selector: 'custom-header',
   template: `
     <div class="custom-header">
+      <button mat-button (click)="setDate('nodate')">No date</button>
       <button mat-button (click)="setDate('today')">Today</button>
-      <button mat-button (click)="setDate('nextMonday')">Next Monday</button>
-      <button mat-button (click)="setDate('nextTuesday')">Next Tuesday</button>
-      <button mat-button (click)="setDate('afterWeek')">After 1 Week</button>
     </div>
     <div class="example-header">
-      <mat-icon matPrefix (click)="previousClicked('month')">arrow_left</mat-icon>
+      <mat-icon matPrefix (click)="previousClicked('month')"
+        >arrow_left</mat-icon
+      >
       <span class="example-header-label">{{ periodLabel }}</span>
       <mat-icon matPrefix (click)="nextClicked('month')">arrow_right</mat-icon>
     </div>
@@ -64,9 +71,9 @@ import { ShareDataService } from '../../services/share-data.service';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomHeaderComponent implements OnDestroy {
+export class CustomHeaderComponent2 implements OnDestroy {
   private _destroyed = new Subject<void>();
-  shareDataService = inject(ShareDataService)
+  shareDataService = inject(ShareDataService);
   constructor(
     private calendar: MatCalendar<Date>,
     private _dateAdapter: DateAdapter<Date>,
@@ -85,45 +92,52 @@ export class CustomHeaderComponent implements OnDestroy {
 
   setDate(option: string) {
     const today = new Date();
-    let selectedDate: Date = today;
+    let selectedDate: Date | null = today;
 
     switch (option) {
       case 'today':
         selectedDate = today;
         break;
-      case 'nextMonday':
-        selectedDate = this.getNextDay(today, 1); // Monday
-        break;
-      case 'nextTuesday':
-        selectedDate = this.getNextDay(today, 2); // Tuesday
-        break;
-      case 'afterWeek':
-        selectedDate = new Date(today.setDate(today.getDate() + 7));
+      case 'nodate':
+        selectedDate = null;
         break;
     }
 
-    console.log(selectedDate)
-    this.calendar.activeDate = selectedDate;
-    this.calendar.selected = selectedDate;
-    const syntheticEvent = new Event('dateSelected'); // Create a synthetic event
-    this.calendar._userSelection.emit({
+    console.log(selectedDate);
+
+    if (selectedDate) {
+      this.calendar.activeDate = selectedDate;
+      this.calendar.selected = selectedDate;
+      const syntheticEvent = new Event('dateSelected'); // Create a synthetic event
+      this.calendar._userSelection.emit({
         value: selectedDate,
         event: syntheticEvent, // You can pass a MouseEvent here if needed, otherwise null
       });
-    this.shareDataService.setsData(selectedDate);
-  }
-
-  private getNextDay(date: Date, dayOfWeek: number): Date {
-    const resultDate = new Date(date.getTime());
-    resultDate.setDate(date.getDate() + ((7 + dayOfWeek - date.getDay()) % 7));
-    return resultDate;
+      this.shareDataService.seteData(selectedDate);
+    } else {
+      this.calendar.activeDate = null as unknown as Date; // Force null with TypeScript type casting
+      const syntheticEvent = new Event('dateSelected'); // Create a synthetic event
+      this.calendar._userSelection.emit({
+        value: null,
+        event: syntheticEvent, // You can pass a MouseEvent here if needed, otherwise null
+      });
+      this.shareDataService.seteData(null);
+      this.calendar.selected = null;
+    }
   }
 
   get periodLabel() {
-  const date = this.calendar.activeDate;
-  return `${date.getDate()} ${this._dateAdapter.getMonthNames('short')[date.getMonth()]} ${date.getFullYear()}`;
-}
-
+    const date = this.calendar.activeDate;
+    console.log(date);
+    if (date) {
+        return `${date.getDate()} ${
+            this._dateAdapter.getMonthNames('short')[date.getMonth()]
+          } ${date.getFullYear()}`;
+    } else {
+        return 'No date'
+    }
+    
+  }
 
   previousClicked(mode: 'month' | 'year') {
     this.calendar.activeDate =

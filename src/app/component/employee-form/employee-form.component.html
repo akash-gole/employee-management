@@ -2,7 +2,10 @@
   <p>
     <mat-form-field appearance="outline">
       <mat-icon matPrefix>person_outlined</mat-icon>
-      <input matInput placeholder="Employee name" />
+      <input matInput placeholder="Employee name" formControlName="name" />
+      <mat-error *ngIf="form.get('name')?.hasError('required')"
+        >This Field is required</mat-error
+      >
     </mat-form-field>
   </p>
 
@@ -13,46 +16,104 @@
       <mat-select
         placeholder="Select role"
         [panelClass]="'custom-select-panel'"
+        formControlName="role"
       >
         <mat-option *ngFor="let role of roles" [value]="role">
           {{ role }}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="form.get('role')?.hasError('required')"
+        >This Field is required</mat-error
+      >
     </mat-form-field>
   </p>
 
   <div class="date-picker-container">
     <!-- Start Date -->
     <mat-form-field appearance="outline" class="date-field">
-      <input matInput placeholder="Today" [matDatepicker]="startPicker" formControlName="joinDate" (dateChange)="onDateChange($event)" />
-      <mat-datepicker-toggle matPrefix [for]="startPicker"></mat-datepicker-toggle>
+      <input
+        matInput
+        placeholder="Today"
+        [matDatepicker]="startPicker"
+        formControlName="joinDate"
+      />
+      <mat-datepicker-toggle
+        matPrefix
+        [for]="startPicker"
+      ></mat-datepicker-toggle>
       <mat-datepicker #startPicker [calendarHeaderComponent]="customHeader">
-          <mat-datepicker-actions>
-            <div class="date-footer">
-                <div class="selected-date-display">
-                    <mat-icon matPrefix>event_outlined</mat-icon> {{ startDate ? (startDate | date: 'd MMM yyyy') : 'None' }}
-                  </div>
-                  <div class="action-button">
-                    <button mat-button matDatepickerCancel class="button-secondary">Cancel</button>
-                    <button mat-raised-button matDatepickerApply class="button-primary">Save</button>
-                  </div>
-                
+        <mat-datepicker-actions>
+          <div class="date-footer">
+            <div class="selected-date-display">
+              <mat-icon matPrefix>event_outlined</mat-icon>
+              {{ form.get('joinDate')?.value ? (form.get('joinDate')?.value | date : "d MMM yyyy") : "None" }}
             </div>
-            
-          </mat-datepicker-actions>
+            <div class="action-button">
+              <button mat-button matDatepickerCancel class="button-secondary">
+                Cancel
+              </button>
+              <button
+                mat-raised-button
+                matDatepickerApply
+                class="button-primary"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </mat-datepicker-actions>
       </mat-datepicker>
+      <mat-error *ngIf="form.get('joinDate')?.hasError('required')"
+        >This Field is required</mat-error
+      >
     </mat-form-field>
-  
+
     <!-- Arrow -->
     <span class="arrow">&#8594;</span>
-  
+
     <!-- End Date -->
-    <mat-form-field appearance="fill" class="date-field">
-      <mat-label>No Date</mat-label>
-      <input matInput [matDatepicker]="endPicker" formControlName="lastDate" />
-      <mat-datepicker-toggle matPrefix [for]="endPicker"></mat-datepicker-toggle>
-      <mat-datepicker #endPicker></mat-datepicker>
+    <mat-form-field appearance="outline" class="date-field">
+      <input
+        matInput
+        [matDatepicker]="endPicker"
+        formControlName="lastDate"
+        placeholder="No Date"
+        (dateChange)="onDateChange($event)"
+      />
+      <mat-datepicker-toggle
+        matPrefix
+        [for]="endPicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #endPicker [calendarHeaderComponent]="customHeader2">
+        <mat-datepicker-actions>
+          <div class="date-footer">
+            <div class="selected-date-display">
+              <mat-icon matPrefix>event_outlined</mat-icon>
+              {{ form.get('lastDate')?.value ? (form.get('lastDate')?.value | date : "d MMM yyyy") : "None" }}
+            </div>
+            <div class="action-button">
+              <button mat-button matDatepickerCancel class="button-secondary">
+                Cancel
+              </button>
+              <button
+                mat-raised-button
+                matDatepickerApply
+                class="button-primary"
+                (click)="applyFunction()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </mat-datepicker-actions>
+      </mat-datepicker>
     </mat-form-field>
   </div>
-  
+
+  <div class="save-button">
+    <button mat-button type="button" class="button-secondary" routerLink="/">
+      Cancel
+    </button>
+    <button mat-raised-button class="button-primary">Save</button>
+  </div>
 </form>

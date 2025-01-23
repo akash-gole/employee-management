@@ -21,6 +21,7 @@ import {
 } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomHeaderComponent } from './component/custome-date-header/custome-date-header.component';
+import { CustomHeaderComponent2 } from './component/custome-date-header/custome-date-header2.component';
 
 // export const CUSTOM_DATE_FORMATS: MatDateFormats = {
 //   parse: {
@@ -50,6 +51,7 @@ const matmodules = [
     EmployeeListComponent,
     EmployeeFormComponent,
     CustomHeaderComponent,
+    CustomHeaderComponent2
   ],
   imports: [
     BrowserModule,

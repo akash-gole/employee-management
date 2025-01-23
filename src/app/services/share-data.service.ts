@@ -6,15 +6,25 @@ import { Injectable, signal } from "@angular/core";
 })
 export class ShareDataService {
 
-    data = signal<Date>(new Date());
+    sdata = signal<Date>(new Date());
+    edata = signal<Date | null>(null);
 
     constructor() {}
 
-    setData(data:Date) {
-        this.data.update(()=> data);
+    setsData(data:Date) {
+        this.sdata.update(()=> data);
     }
 
-    getData(): any {
-        return this.data();
+    getsData(): any {
+        return this.sdata();
+    }
+
+    seteData(data:Date | null) {
+        console.log("seteData", data)
+        this.edata.update(()=> data);
+    }
+
+    geteData(): any {
+        return this.edata();
     }
 }

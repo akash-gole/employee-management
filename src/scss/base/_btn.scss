@@ -29,13 +29,13 @@
 
 
   &:hover {
-    border-color: var(--color-dark04);
-    background-color: var(--color-dark04);
-    color: var(--white);
+    border-color: var(--color-primary);
+    background-color: #EDF8FF;
+    color: var(--color-primary);
   }
 
   &:disabled {
-    background-color: var(--color-dark02);
-    color: var(--color-dark04);
+    background-color: #EDF8FF;
+    color: var(--color-primary);
   }
 }

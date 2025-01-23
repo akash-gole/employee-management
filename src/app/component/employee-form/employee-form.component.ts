@@ -4,6 +4,8 @@ import { CustomHeaderComponent } from '../custome-date-header/custome-date-heade
 import { ShareDataService } from '../../services/share-data.service';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CustomHeaderComponent2 } from '../custome-date-header/custome-date-header2.component';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 
 export const MY_FORMATS = {
@@ -50,6 +52,7 @@ class CustomDateAdapter extends MomentDateAdapter {
 })
 export class EmployeeFormComponent {
   customHeader = CustomHeaderComponent;
+  customHeader2 = CustomHeaderComponent2;
   roles = ['Product Designer', 'Flutter Developer', 'QA Tester', 'Product Owner'];
   startDate: Date | null = new Date();// Default to today
   endDate: Date | null = null; // No default for the end date
@@ -59,9 +62,11 @@ export class EmployeeFormComponent {
   constructor(private formBuilder: FormBuilder) {
     effect(() => {
       
-      this.startDate = this.shareDataService.getData();
+      this.startDate = this.shareDataService.getsData();
+      this.endDate = this.shareDataService.geteData();
       // this.form.get('joinDate')?.setValue(this.startDate);
-      console.log("effect", this.startDate)
+     
+      console.log("this.endDate", this.endDate);
     })
   }
 
@@ -69,18 +74,28 @@ export class EmployeeFormComponent {
     name: ['', Validators.required],
     role: ['', Validators.required],
     joinDate: [this.startDate, Validators.required],
-    lastDate: [null, Validators.required]
+    lastDate: [this.endDate]
   });
 
   onSubmitEvent(): void {
-  }
-
-  onDateChange(event: any) {
-    // this.startDate = event.value;
+    console.log(this.form);
   }
 
   saveDate(event: any) {
     console.log(event.value);
+  }
+
+  applyFunction() {
+    console.log("this.form",this.form);
+    console.log("this.endDate",this.endDate);
+    if(!this.endDate) {
+      this.form.get('lastDate')?.setValue(null);
+    }
+  }
+
+  onDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Date changed:', event.value); // event.value contains the selected date
+    this.shareDataService.seteData(event.value);
   }
 
   
