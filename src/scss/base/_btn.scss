@@ -1,12 +1,13 @@
 
 .button-primary {
-  padding: 12px 12px;
+  padding: 10px 10px;
   background: var(--color-primary);
   border-radius: 6px;
   color: var(--white);
   cursor: pointer;
   white-space: nowrap;
   border-color: transparent;
+  height: 40px;
 
   &:disabled {
     background-color: var(--color-light06);
@@ -17,12 +18,15 @@
 
 
 .button-secondary {
-  padding: 12px 32px;
+  padding: 10px 10px;
   border-radius: 6px;
-  background-color: var(--color-dark03);
-  color: var(--white);
+  background-color: #EDF8FF;
+  color: var(--color-primary);
   cursor: pointer;
   white-space: nowrap;
+  border-color: transparent;
+  height: 40px;
+
 
   &:hover {
     border-color: var(--color-dark04);

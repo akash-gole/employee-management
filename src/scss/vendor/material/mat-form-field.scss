@@ -1,0 +1,87 @@
+@import "../../shared.scss";
+
+.mat-mdc-form-field {
+    width: 100% !important;
+}
+
+.mat-form-field-appearance-outline {
+    color: var(--color-primary)  !important;
+  }
+
+  .mdc-text-field--outlined {
+    border: 1px solid var(--color-light) !important;
+  }
+
+  .mdc-text-field--focused {
+    border: 1px solid var(--color-primary) !important;
+  }
+
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    @include title-bold;
+    color: var(--color-font) !important;
+  }
+  
+  .mat-mdc-input-element::placeholder {
+    @include title-bold;
+    color:var(--color-light2) !important;
+  }
+
+
+  .mat-mdc-select-arrow {
+    color: var(--color-primary) !important;
+  }
+
+  .mat-mdc-select-placeholder {
+    color: var(--color-light2) !important;
+    @include title-bold;
+  }
+
+  .mat-mdc-select-value-text {
+    @include title-bold;
+    color: var(--color-font) !important;
+  }
+
+  .mat-datepicker-toggle {
+    color: var(--color-primary) !important;
+  }
+
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent !important;
+    border: 1px solid var(--color-light) !important;
+  }
+
+  .mat-mdc-floating-label {
+    @include title-bold;
+    color:var(--color-light2) !important;
+  }
+
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    @include title-bold;
+    color: var(--color-font) !important;
+  }
+
+  .mat-datepicker-content {
+    background-color: var(--white) !important;
+    color: var(--black) !important;
+  }
+
+  .mat-calendar-body-cell-content{
+    color: var(--black) !important;
+  }
+
+  .mat-calendar-table-header th {
+    color: var(--black) !important;
+  }
+  .mat-datepicker-actions {
+    padding: 10px 8px 8px 8px !important;
+    border-top: 1px solid var(--color-light) !important;
+  }
+
+  .mat-calendar-body-selected {
+    background-color: var(--color-primary) !important;
+    color: var(--white) !important;
+  }
+
+  .mat-calendar-body-selected.mat-calendar-body-today {
+    box-shadow: none !important;
+  }

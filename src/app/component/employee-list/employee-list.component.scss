@@ -3,21 +3,21 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: calc(100% - 56px); /* Full screen height */
+    height: calc(100% - 56px); 
     text-align: center;
     background-color: #f9f9f9;
 
     img {
-        max-width: 80%; /* Makes sure image doesn't overflow */
+        max-width: 80%; 
         height: auto;
     }
   }
 
   .fab-container {
     position: fixed;
-    bottom: 16px; /* Distance from the bottom edge */
-    right: 16px;  /* Distance from the right edge */
-    z-index: 1000; /* Ensures it stays above other elements */
+    bottom: 16px;
+    right: 16px;
+    z-index: 1000;
   }
   
   button[mat-fab] {

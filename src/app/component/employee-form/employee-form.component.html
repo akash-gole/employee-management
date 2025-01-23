@@ -1,1 +1,58 @@
-<p>employee-form works!</p>
+<form [formGroup]="form" (submit)="onSubmitEvent()" class="employee-form">
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-icon matPrefix>person_outlined</mat-icon>
+      <input matInput placeholder="Employee name" />
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-icon matPrefix>work_outline</mat-icon>
+      <!-- <mat-label>Select role</mat-label> -->
+      <mat-select
+        placeholder="Select role"
+        [panelClass]="'custom-select-panel'"
+      >
+        <mat-option *ngFor="let role of roles" [value]="role">
+          {{ role }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </p>
+
+  <div class="date-picker-container">
+    <!-- Start Date -->
+    <mat-form-field appearance="outline" class="date-field">
+      <input matInput placeholder="Today" [matDatepicker]="startPicker" formControlName="joinDate" (dateChange)="onDateChange($event)" />
+      <mat-datepicker-toggle matPrefix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker [calendarHeaderComponent]="customHeader">
+          <mat-datepicker-actions>
+            <div class="date-footer">
+                <div class="selected-date-display">
+                    <mat-icon matPrefix>event_outlined</mat-icon> {{ startDate ? (startDate | date: 'd MMM yyyy') : 'None' }}
+                  </div>
+                  <div class="action-button">
+                    <button mat-button matDatepickerCancel class="button-secondary">Cancel</button>
+                    <button mat-raised-button matDatepickerApply class="button-primary">Save</button>
+                  </div>
+                
+            </div>
+            
+          </mat-datepicker-actions>
+      </mat-datepicker>
+    </mat-form-field>
+  
+    <!-- Arrow -->
+    <span class="arrow">&#8594;</span>
+  
+    <!-- End Date -->
+    <mat-form-field appearance="fill" class="date-field">
+      <mat-label>No Date</mat-label>
+      <input matInput [matDatepicker]="endPicker" formControlName="lastDate" />
+      <mat-datepicker-toggle matPrefix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  
+</form>
