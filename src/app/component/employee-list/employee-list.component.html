@@ -7,10 +7,16 @@
   <div
     *ngFor="let employee of currentEmployees; let i = index"
     class="employee-card"
+    (mousedown)="onLongPressStart($event, employee)"
+    (mouseup)="onLongPressEnd($event)"
+    (mouseleave)="onLongPressEnd($event)"
+    (touchstart)="onLongPressStart($event, employee)"
+    (touchend)="onLongPressEnd($event)"
   >
     <div
       class="employee-details"
       cdkDrag
+      [cdkDragLockAxis]="'x'"
       (cdkDragMoved)="onDragMoved($event, i, employee)"
       (cdkDragEnded)="onDragEnded($event, i, employee)"
       [ngClass]="{ dragging: draggingIndex === i }"
@@ -32,10 +38,16 @@
   <div
     *ngFor="let employee of previousEmployees; let i = index"
     class="employee-card"
+    (mousedown)="onLongPressStart($event, employee)"
+    (mouseup)="onLongPressEnd($event)"
+    (mouseleave)="onLongPressEnd($event)"
+    (touchstart)="onLongPressStart($event, employee)"
+    (touchend)="onLongPressEnd($event)"
   >
     <div
       class="employee-details"
       cdkDrag
+      [cdkDragLockAxis]="'x'"
       (cdkDragMoved)="onDragMoved($event, i, employee)"
       (cdkDragEnded)="onDragEnded($event, i, employee)"
       [ngClass]="{ dragging: draggingIndex === i }"

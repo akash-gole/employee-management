@@ -58,7 +58,7 @@
       transition: transform 0.3s ease, opacity 0.3s ease;
 
       .employee-details {
-        width: 90%;
+        // width: 90%;
       }
   
       .employee-details h4 {
@@ -98,6 +98,11 @@
         border-radius: 4px;
         padding: 0.5rem 1rem;
       }
+    }
+
+    .employee-card.long-press {
+      background-color: #f0f0f0;
+      transition: background-color 0.3s ease;
     }
 
     .employee-card.dragging {

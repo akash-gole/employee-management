@@ -9,6 +9,8 @@ export class ShareDataService {
     sdata = signal<Date>(new Date());
     edata = signal<Date | null>(null);
 
+    nodate = signal<Boolean>(false);
+
     constructor() {}
 
     setsData(data:Date) {

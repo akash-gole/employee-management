@@ -19,7 +19,8 @@ import {
 import { CustomHeaderComponent2 } from '../custome-date-header/custome-date-header2.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { EmployeeDBService } from '../../services/employee-db.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { pluck } from 'rxjs';
 
 export const MY_FORMATS = {
   display: {
@@ -61,7 +62,7 @@ class CustomDateAdapter extends MomentDateAdapter {
 
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeeFormComponent {
   customHeader = CustomHeaderComponent;
@@ -74,20 +75,21 @@ export class EmployeeFormComponent {
   ];
   startDate: Date | null = new Date(); // Default to today
   endDate: Date | null = null; // No default for the end date
+  Id:number = 0;
 
   shareDataService = inject(ShareDataService);
 
   constructor(
     private formBuilder: FormBuilder,
     private employeeDBService: EmployeeDBService,
-    private router: Router
+    private router: Router,
+    public activatedRoute: ActivatedRoute,
   ) {
     effect(() => {
       this.startDate = this.shareDataService.getsData();
       this.endDate = this.shareDataService.geteData();
-      // this.form.get('joinDate')?.setValue(this.startDate);
-
-      console.log('this.endDate', this.endDate);
+      console.log('this.effect', this.endDate);
+      
     });
   }
 
@@ -95,34 +97,66 @@ export class EmployeeFormComponent {
     name: ['', Validators.required],
     role: ['', Validators.required],
     joinDate: [this.startDate, Validators.required],
-    lastDate: [this.endDate],
+    lastDate: [null],
   });
 
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe((empId: any) => {
+      console.log("id", empId);
+      if(empId?.id) this.getData(empId?.id);
+    });
+    
+  }
   onSubmitEvent(): void {
     console.log(this.form);
-    if(this.form.valid) {
-      this.employeeDBService.addEmployee(this.form.value).subscribe((id) => {
-        console.log('Employee added with ID:', id);
-        this.router.navigate(['/']);
-      });
+    if (this.form.valid) {
+      if(this.Id) {
+        this.onUpdate();
+      } else {
+        this.employeeDBService.addEmployee(this.form.value).subscribe((id) => {
+          console.log('Employee added with ID:', id);
+          this.router.navigate(['/']);
+        });
+      }
+      
     }
-    
   }
 
   saveDate(event: any) {
     console.log(event.value);
   }
 
-  applyFunction() {
-    console.log('this.form', this.form);
-    console.log('this.endDate', this.endDate);
-    if (!this.endDate) {
+  onDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Date changed:', event); // event.value contains the selected date
+    console.log('end date:', this.endDate);
+    if (this.shareDataService.nodate()) {
+      console.log('this.hello', this.endDate);
       this.form.get('lastDate')?.setValue(null);
+      this.shareDataService.nodate.set(false);
     }
+    // this.shareDataService.seteData(event.value);
+    // this.applyFunction()
+    // this.applyFunction();
   }
 
-  onDateChange(event: MatDatepickerInputEvent<Date>) {
-    console.log('Date changed:', event.value); // event.value contains the selected date
-    this.shareDataService.seteData(event.value);
+  getData(id:number) {
+    console.log("id", id);
+    this.employeeDBService.getEmployeeById(+id).subscribe((data) => {
+      console.log(data);
+      this.form.patchValue(data);
+      this.shareDataService.seteData(data.joinDate);
+      this.shareDataService.seteData(data.lastDate);
+      this.Id = +id;
+    })
+  }
+
+  onUpdate():void {
+    console.log("update",this.form);
+    if (this.form.valid) {
+      this.employeeDBService.updateEmployee(this.Id, this.form.value).subscribe((id) => {
+        console.log('Employee added with ID:', id);
+        this.router.navigate(['/']);
+      });
+    }
   }
 }

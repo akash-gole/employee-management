@@ -123,6 +123,7 @@ export class CustomHeaderComponent2 implements OnDestroy {
       });
       this.shareDataService.seteData(null);
       this.calendar.selected = null;
+      this.shareDataService.nodate.set(true);
     }
   }
 
