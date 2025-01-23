@@ -3,16 +3,38 @@
 </div>
 
 <div *ngIf="employees.length > 0" class="data-container">
-  <!-- Employee List Display Logic -->
-</div>
+  <h3>Current employees</h3>
+  <div *ngFor="let employee of currentEmployees" class="employee-card">
+    <div class="employee-details">
+      <h4>{{ employee.name }}</h4>
+      <p>{{ employee.role }}</p>
+      <p>From {{ employee.joinDate | date : "d MMM, yyyy" }}</p>
+    </div>
+  </div>
 
-<div class="fab-container">
-  <button
-    mat-fab
-    color="primary"
-    class="button-primary"
-    (click)="addEmployee()"
-  >
-    <mat-icon>add</mat-icon>
-  </button>
+  <h3>Previous employees</h3>
+  <div *ngFor="let employee of previousEmployees" class="employee-card">
+    <div class="employee-details">
+      <h4>{{ employee.name }}</h4>
+      <p>{{ employee.role }}</p>
+      <p>
+        {{ employee.joinDate | date : "d MMM, yyyy" }} -
+        {{ employee.lastDate | date : "d MMM, yyyy" }}
+      </p>
+    </div>
+  </div>
+  <div class="swipe-to-delete">
+    <p>Swipe left to delete</p>
+  </div>
+
+  <div class="fab-container">
+    <button
+      mat-fab
+      color="primary"
+      class="button-primary"
+      (click)="addEmployee()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
 </div>

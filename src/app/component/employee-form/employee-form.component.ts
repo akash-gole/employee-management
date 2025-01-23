@@ -1,12 +1,25 @@
-import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomHeaderComponent } from '../custome-date-header/custome-date-header.component';
 import { ShareDataService } from '../../services/share-data.service';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter,
+} from '@angular/material-moment-adapter';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 import { CustomHeaderComponent2 } from '../custome-date-header/custome-date-header2.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-
+import { EmployeeDBService } from '../../services/employee-db.service';
+import { Router } from '@angular/router';
 
 export const MY_FORMATS = {
   display: {
@@ -53,32 +66,47 @@ class CustomDateAdapter extends MomentDateAdapter {
 export class EmployeeFormComponent {
   customHeader = CustomHeaderComponent;
   customHeader2 = CustomHeaderComponent2;
-  roles = ['Product Designer', 'Flutter Developer', 'QA Tester', 'Product Owner'];
-  startDate: Date | null = new Date();// Default to today
+  roles = [
+    'Product Designer',
+    'Flutter Developer',
+    'QA Tester',
+    'Product Owner',
+  ];
+  startDate: Date | null = new Date(); // Default to today
   endDate: Date | null = null; // No default for the end date
 
-  shareDataService = inject(ShareDataService)
+  shareDataService = inject(ShareDataService);
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private employeeDBService: EmployeeDBService,
+    private router: Router
+  ) {
     effect(() => {
-      
       this.startDate = this.shareDataService.getsData();
       this.endDate = this.shareDataService.geteData();
       // this.form.get('joinDate')?.setValue(this.startDate);
-     
-      console.log("this.endDate", this.endDate);
-    })
+
+      console.log('this.endDate', this.endDate);
+    });
   }
 
   form: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
     role: ['', Validators.required],
     joinDate: [this.startDate, Validators.required],
-    lastDate: [this.endDate]
+    lastDate: [this.endDate],
   });
 
   onSubmitEvent(): void {
     console.log(this.form);
+    if(this.form.valid) {
+      this.employeeDBService.addEmployee(this.form.value).subscribe((id) => {
+        console.log('Employee added with ID:', id);
+        this.router.navigate(['/']);
+      });
+    }
+    
   }
 
   saveDate(event: any) {
@@ -86,9 +114,9 @@ export class EmployeeFormComponent {
   }
 
   applyFunction() {
-    console.log("this.form",this.form);
-    console.log("this.endDate",this.endDate);
-    if(!this.endDate) {
+    console.log('this.form', this.form);
+    console.log('this.endDate', this.endDate);
+    if (!this.endDate) {
       this.form.get('lastDate')?.setValue(null);
     }
   }
@@ -97,6 +125,4 @@ export class EmployeeFormComponent {
     console.log('Date changed:', event.value); // event.value contains the selected date
     this.shareDataService.seteData(event.value);
   }
-
-  
 }

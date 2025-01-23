@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTableModule } from '@angular/material/table';
 import {
   MAT_DATE_FORMATS,
   MatNativeDateModule,
@@ -22,6 +23,7 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomHeaderComponent } from './component/custome-date-header/custome-date-header.component';
 import { CustomHeaderComponent2 } from './component/custome-date-header/custome-date-header2.component';
+import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
 
 // export const CUSTOM_DATE_FORMATS: MatDateFormats = {
 //   parse: {
@@ -35,6 +37,23 @@ import { CustomHeaderComponent2 } from './component/custome-date-header/custome-
 //   },
 // };
 
+const dbConfig: DBConfig = {
+  name: 'EmployeeDB',
+  version: 1,
+  objectStoresMeta: [
+    {
+      store: 'employees',
+      storeConfig: { keyPath: 'id', autoIncrement: true },
+      storeSchema: [
+        { name: 'name', keypath: 'name', options: { unique: false } },
+        { name: 'role', keypath: 'role', options: { unique: false } },
+        { name: 'joinDate', keypath: 'joinDate', options: { unique: false } },
+        { name: 'lastDate', keypath: 'lastDate', options: { unique: false } },
+      ],
+    },
+  ],
+};
+
 const matmodules = [
   MatToolbarModule,
   MatIconModule,
@@ -43,6 +62,7 @@ const matmodules = [
   MatSelectModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatTableModule
 ];
 
 @NgModule({
@@ -55,6 +75,7 @@ const matmodules = [
   ],
   imports: [
     BrowserModule,
+    NgxIndexedDBModule.forRoot(dbConfig),
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
