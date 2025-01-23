@@ -1,8 +1,10 @@
 export interface Employee {
-    id: string;
+    id: number;
     name: string;
     role: string;
     joinDate: Date;
     lastDate: Date;
+    isDeleting?: boolean;
+    currentX: number;
   }
   

@@ -4,17 +4,42 @@
 
 <div *ngIf="employees.length > 0" class="data-container">
   <h3>Current employees</h3>
-  <div *ngFor="let employee of currentEmployees" class="employee-card">
-    <div class="employee-details">
+  <div
+    *ngFor="let employee of currentEmployees; let i = index"
+    class="employee-card"
+  >
+    <div
+      class="employee-details"
+      cdkDrag
+      (cdkDragMoved)="onDragMoved($event, i, employee)"
+      (cdkDragEnded)="onDragEnded($event, i, employee)"
+      [ngClass]="{ dragging: draggingIndex === i }"
+    >
       <h4>{{ employee.name }}</h4>
       <p>{{ employee.role }}</p>
       <p>From {{ employee.joinDate | date : "d MMM, yyyy" }}</p>
     </div>
+    <div
+      class="delete-button"
+      (click)="deleteEmployee(employee)"
+      *ngIf="draggingIndex === i || employee.isDeleting"
+    >
+      <mat-icon matPrefix>delete_outline</mat-icon>
+    </div>
   </div>
 
   <h3>Previous employees</h3>
-  <div *ngFor="let employee of previousEmployees" class="employee-card">
-    <div class="employee-details">
+  <div
+    *ngFor="let employee of previousEmployees; let i = index"
+    class="employee-card"
+  >
+    <div
+      class="employee-details"
+      cdkDrag
+      (cdkDragMoved)="onDragMoved($event, i, employee)"
+      (cdkDragEnded)="onDragEnded($event, i, employee)"
+      [ngClass]="{ dragging: draggingIndex === i }"
+    >
       <h4>{{ employee.name }}</h4>
       <p>{{ employee.role }}</p>
       <p>
@@ -22,19 +47,25 @@
         {{ employee.lastDate | date : "d MMM, yyyy" }}
       </p>
     </div>
+    <div
+      class="delete-button"
+      (click)="deleteEmployee(employee)"
+      *ngIf="draggingIndex === i || employee.isDeleting"
+    >
+      <mat-icon matPrefix>delete_outline</mat-icon>
+    </div>
   </div>
   <div class="swipe-to-delete">
     <p>Swipe left to delete</p>
   </div>
-
-  <div class="fab-container">
-    <button
-      mat-fab
-      color="primary"
-      class="button-primary"
-      (click)="addEmployee()"
-    >
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
+</div>
+<div class="fab-container">
+  <button
+    mat-fab
+    color="primary"
+    class="button-primary"
+    (click)="addEmployee()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

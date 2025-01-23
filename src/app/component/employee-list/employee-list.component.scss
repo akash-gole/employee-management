@@ -50,10 +50,16 @@
     }
   
     .employee-card {
-      display: flex      ;
-      flex-direction: column;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       padding: 16px;
       border-bottom: 1px solid #e0e0e0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+
+      .employee-details {
+        width: 90%;
+      }
   
       .employee-details h4 {
         margin: 0;
@@ -65,5 +71,42 @@
         color: #949C9E;
         @include subtitle-medium
       }
+
+      .delete-button {
+        position: relative;
+        // right: 0;
+        // top: 0;
+        // height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #F34642;
+        color: white;
+        width: 100px;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        transition: opacity 0.3s ease-in-out;
+        margin: -15px;
+    border-radius: unset;
+      }
+  
+      .delete-button button {
+        background: #ff5c5c;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+      }
+    }
+
+    .employee-card.dragging {
+      transition: none; /* Disable transition while dragging */
+    }
+
+    
+    
+    .employee-card-wrapper:hover .delete-button {
+      opacity: 1;
     }
   }

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { Injectable, NgModule } from '@angular/core';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +24,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomHeaderComponent } from './component/custome-date-header/custome-date-header.component';
 import { CustomHeaderComponent2 } from './component/custome-date-header/custome-date-header2.component';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import * as Hammer from 'hammerjs';
 
 // export const CUSTOM_DATE_FORMATS: MatDateFormats = {
 //   parse: {
@@ -54,6 +56,13 @@ const dbConfig: DBConfig = {
   ],
 };
 
+@Injectable()
+export class MyHammerConfig extends HammerGestureConfig {
+  override overrides = {
+    swipe: { direction: Hammer.DIRECTION_HORIZONTAL }, // Enable all swipe directions
+  };
+}
+
 const matmodules = [
   MatToolbarModule,
   MatIconModule,
@@ -80,11 +89,16 @@ const matmodules = [
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    DragDropModule,
     matmodules,
   ],
   providers: [
     // { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
     // { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }, // Optional: Set locale for consistent formatting
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig,
+    },
   ],
   bootstrap: [AppComponent],
 })
