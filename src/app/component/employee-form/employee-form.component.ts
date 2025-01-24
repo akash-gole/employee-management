@@ -1,8 +1,7 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   effect,
-  inject,
+  HostListener,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomHeaderComponent } from '../custome-date-header/custome-date-header.component';
@@ -75,23 +74,21 @@ export class EmployeeFormComponent {
   ];
   startDate: Date | null = new Date(); // Default to today
   endDate: Date | null = null; // No default for the end date
-  Id:number = 0;
-
-  shareDataService = inject(ShareDataService);
+  Id: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
     private employeeDBService: EmployeeDBService,
     private router: Router,
     public activatedRoute: ActivatedRoute,
+    private shareDataService: ShareDataService
   ) {
     effect(() => {
       this.startDate = this.shareDataService.getsData();
       this.endDate = this.shareDataService.geteData();
-      console.log('this.effect', this.endDate);
-      
     });
   }
+
 
   form: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
@@ -102,35 +99,31 @@ export class EmployeeFormComponent {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((empId: any) => {
-      console.log("id", empId);
-      if(empId?.id) this.getData(empId?.id);
+      if (empId?.id) this.getData(empId?.id);
     });
-    
   }
+
+  endDateFilter = (date: Date | null): boolean => {
+    if (!this.form.get('joinDate')?.value || !date) {
+      return true; // Allow all dates if start date is not selected
+    }
+    // Disable dates before or equal to the start date
+    return date > this.form.get('joinDate')?.value;
+  };
   onSubmitEvent(): void {
-    console.log(this.form);
     if (this.form.valid) {
-      if(this.Id) {
+      if (this.Id) {
         this.onUpdate();
       } else {
         this.employeeDBService.addEmployee(this.form.value).subscribe((id) => {
-          console.log('Employee added with ID:', id);
           this.router.navigate(['/']);
         });
       }
-      
     }
   }
 
-  saveDate(event: any) {
-    console.log(event.value);
-  }
-
   onDateChange(event: MatDatepickerInputEvent<Date>) {
-    console.log('Date changed:', event); // event.value contains the selected date
-    console.log('end date:', this.endDate);
     if (this.shareDataService.nodate()) {
-      console.log('this.hello', this.endDate);
       this.form.get('lastDate')?.setValue(null);
       this.shareDataService.nodate.set(false);
     }
@@ -139,24 +132,22 @@ export class EmployeeFormComponent {
     // this.applyFunction();
   }
 
-  getData(id:number) {
-    console.log("id", id);
+  getData(id: number) {
     this.employeeDBService.getEmployeeById(+id).subscribe((data) => {
-      console.log(data);
       this.form.patchValue(data);
       this.shareDataService.seteData(data.joinDate);
       this.shareDataService.seteData(data.lastDate);
       this.Id = +id;
-    })
+    });
   }
 
-  onUpdate():void {
-    console.log("update",this.form);
+  onUpdate(): void {
     if (this.form.valid) {
-      this.employeeDBService.updateEmployee(this.Id, this.form.value).subscribe((id) => {
-        console.log('Employee added with ID:', id);
-        this.router.navigate(['/']);
-      });
+      this.employeeDBService
+        .updateEmployee(this.Id, this.form.value)
+        .subscribe((id) => {
+          this.router.navigate(['/']);
+        });
     }
   }
 }

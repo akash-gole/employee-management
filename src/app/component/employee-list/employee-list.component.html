@@ -7,11 +7,6 @@
   <div
     *ngFor="let employee of currentEmployees; let i = index"
     class="employee-card"
-    (mousedown)="onLongPressStart($event, employee)"
-    (mouseup)="onLongPressEnd($event)"
-    (mouseleave)="onLongPressEnd($event)"
-    (touchstart)="onLongPressStart($event, employee)"
-    (touchend)="onLongPressEnd($event)"
   >
     <div
       class="employee-details"
@@ -20,6 +15,11 @@
       (cdkDragMoved)="onDragMoved($event, i, employee)"
       (cdkDragEnded)="onDragEnded($event, i, employee)"
       [ngClass]="{ dragging: draggingIndex === i }"
+      (mousedown)="onLongPressStart($event, employee)"
+      (mouseup)="onLongPressEnd($event)"
+      (mouseleave)="onLongPressEnd($event)"
+      (touchstart)="onLongPressStart($event, employee)"
+      (touchend)="onLongPressEnd($event)"
     >
       <h4>{{ employee.name }}</h4>
       <p>{{ employee.role }}</p>
@@ -38,11 +38,6 @@
   <div
     *ngFor="let employee of previousEmployees; let i = index"
     class="employee-card"
-    (mousedown)="onLongPressStart($event, employee)"
-    (mouseup)="onLongPressEnd($event)"
-    (mouseleave)="onLongPressEnd($event)"
-    (touchstart)="onLongPressStart($event, employee)"
-    (touchend)="onLongPressEnd($event)"
   >
     <div
       class="employee-details"
@@ -51,6 +46,11 @@
       (cdkDragMoved)="onDragMoved($event, i, employee)"
       (cdkDragEnded)="onDragEnded($event, i, employee)"
       [ngClass]="{ dragging: draggingIndex === i }"
+      (mousedown)="onLongPressStart($event, employee)"
+      (mouseup)="onLongPressEnd($event)"
+      (mouseleave)="onLongPressEnd($event)"
+      (touchstart)="onLongPressStart($event, employee)"
+      (touchend)="onLongPressEnd($event)"
     >
       <h4>{{ employee.name }}</h4>
       <p>{{ employee.role }}</p>
@@ -69,6 +69,7 @@
   </div>
   <div class="swipe-to-delete">
     <p>Swipe left to delete</p>
+    <p>Long press to edit employee</p>
   </div>
 </div>
 <div class="fab-container">

@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   Inject,
-  inject,
   OnDestroy,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
@@ -73,10 +72,10 @@ import {
 })
 export class CustomHeaderComponent2 implements OnDestroy {
   private _destroyed = new Subject<void>();
-  shareDataService = inject(ShareDataService);
   constructor(
     private calendar: MatCalendar<Date>,
     private _dateAdapter: DateAdapter<Date>,
+    private shareDataService: ShareDataService,
     @Inject(MAT_DATE_FORMATS) private _dateFormats: MatDateFormats,
     cdr: ChangeDetectorRef
   ) {
@@ -103,7 +102,6 @@ export class CustomHeaderComponent2 implements OnDestroy {
         break;
     }
 
-    console.log(selectedDate);
 
     if (selectedDate) {
       this.calendar.activeDate = selectedDate;
@@ -129,7 +127,6 @@ export class CustomHeaderComponent2 implements OnDestroy {
 
   get periodLabel() {
     const date = this.calendar.activeDate;
-    console.log(date);
     if (date) {
         return `${date.getDate()} ${
             this._dateAdapter.getMonthNames('short')[date.getMonth()]

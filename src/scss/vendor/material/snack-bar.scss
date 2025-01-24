@@ -1,0 +1,18 @@
+
+
+.mat-mdc-snack-bar-handset .mdc-snackbar__surface {
+    width: 100vh !important;
+    margin-left: -10px !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    background-color: var(--black) !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__label {
+    color: white !important;
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
+    color: var(--color-primary) !important;
+}

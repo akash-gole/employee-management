@@ -102,7 +102,6 @@ export class CustomHeaderComponent implements OnDestroy {
         break;
     }
 
-    console.log(selectedDate)
     this.calendar.activeDate = selectedDate;
     this.calendar.selected = selectedDate;
     const syntheticEvent = new Event('dateSelected'); // Create a synthetic event

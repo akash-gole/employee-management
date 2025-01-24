@@ -41,8 +41,6 @@
     }
 
     .swipe-to-delete {
-      flex: 1; /* Stretch to fill remaining space */
-      display: flex;
       align-items: center; /* Center text vertically */
       background: #f0f0f0;
       border-top: 1px solid #ddd;
@@ -88,7 +86,7 @@
         z-index: 10;
         transition: opacity 0.3s ease-in-out;
         margin: -15px;
-    border-radius: unset;
+      border-radius: unset;
       }
   
       .delete-button button {

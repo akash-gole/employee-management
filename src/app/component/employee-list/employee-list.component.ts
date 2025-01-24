@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmployeeDBService } from '../../services/employee-db.service';
 import { Employee } from '../../model/employee';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
+import { ToastService } from '../../services/toast.service';
+import { ShareDataService } from '../../services/share-data.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -20,26 +22,28 @@ export class EmployeeListComponent implements OnInit {
   constructor(
     private route: Router,
     private employeeDBService: EmployeeDBService,
-    
+    private toastService: ToastService,
+    private shareDataService: ShareDataService
   ) {}
 
   ngOnInit(): void {
     this.loadEmployees();
   }
 
-  onDragMoved(event: CdkDragMove, index: number, emp:Employee) {
+  onDragMoved(event: CdkDragMove, index: number, emp: Employee) {
     const xPosition = event.pointerPosition.x;
     const cardElement = event.source.element.nativeElement;
 
     // Calculate the translation relative to the card's initial position
     const deltaX = xPosition - cardElement.offsetLeft;
-    console.log(deltaX)
-      // Update currentX position for this specific card
-      emp.currentX = deltaX;
-      // cardElement.style.transform = `translateX(${deltaX}px)`;
+    // Update currentX position for this specific card
+    emp.currentX = deltaX;
+    // cardEle
+    //
+    // ment.style.transform = `translateX(${deltaX}px)`;
   }
 
-  onDragEnded(event: CdkDragEnd, index: number, emp:Employee) {
+  onDragEnded(event: CdkDragEnd, index: number, emp: Employee) {
     const cardElement = event.source.element.nativeElement;
 
     if (emp.currentX < -this.swipeThreshold) {
@@ -57,7 +61,6 @@ export class EmployeeListComponent implements OnInit {
     const currentDate = new Date();
     this.employeeDBService.getAllEmployees().subscribe((data) => {
       this.employees = data;
-      console.log('Employee list:', data);
       this.currentEmployees = data.filter(
         (employee) =>
           !employee.lastDate || new Date(employee.lastDate) > currentDate
@@ -75,25 +78,24 @@ export class EmployeeListComponent implements OnInit {
   }
 
   deleteEmployee(emp: any) {
-    console.log('emp', emp);
     this.employeeDBService.deleteEmployee(emp?.id).subscribe(() => {
-      console.log('Employee deleted:', emp);
       this.loadEmployees();
+      this.shareDataService.setDeletedData(emp);
+      this.toastService.show('Employee data has been deleted', 'Undo');
     });
   }
 
   onLongPressStart(event: Event, employee: any) {
-    console.log("press")
     event.preventDefault();
     const target = event.target as HTMLElement;
     target.classList.add('long-press');
-  
+
     this.longPressTimeout = setTimeout(() => {
       this.editEmployee(employee);
       target.classList.remove('long-press');
     }, 800);
   }
-  
+
   onLongPressEnd(event: Event) {
     event.preventDefault();
     clearTimeout(this.longPressTimeout);
@@ -102,7 +104,6 @@ export class EmployeeListComponent implements OnInit {
   }
 
   editEmployee(employee: any) {
-    console.log('Editing Employee:', employee);
     this.route.navigate(['add-employee', employee?.id]);
     // Navigate to the edit form or open a modal
   }

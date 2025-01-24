@@ -1,4 +1,5 @@
 import { Injectable, signal } from "@angular/core";
+import { Employee } from "../model/employee";
 
 
 @Injectable({
@@ -11,6 +12,9 @@ export class ShareDataService {
 
     nodate = signal<Boolean>(false);
 
+    deletedEmployee = signal<Employee | null>(null)
+    
+
     constructor() {}
 
     setsData(data:Date) {
@@ -22,11 +26,18 @@ export class ShareDataService {
     }
 
     seteData(data:Date | null) {
-        console.log("seteData", data)
         this.edata.update(()=> data);
     }
 
     geteData(): any {
         return this.edata();
+    }
+
+    setDeletedData(data:Employee | null) {
+        this.deletedEmployee.update(()=> data);
+    }
+
+    getDeletedData(): any {
+        return this.deletedEmployee();
     }
 }

@@ -36,6 +36,8 @@
         placeholder="Today"
         [matDatepicker]="startPicker"
         formControlName="joinDate"
+        [readonly]="true"
+        (click)="startPicker.open()" 
       />
       <mat-datepicker-toggle
         matPrefix
@@ -76,9 +78,12 @@
       <input
         matInput
         [matDatepicker]="endPicker"
+        [matDatepickerFilter]="endDateFilter"
         formControlName="lastDate"
         placeholder="No Date"
         (dateChange)="onDateChange($event)"
+        [readonly]="true"
+        (click)="endPicker.open()" 
       />
       <mat-datepicker-toggle
         matPrefix

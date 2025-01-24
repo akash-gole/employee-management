@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
         filter((event) => event instanceof NavigationEnd)
       )
       .subscribe(() => {
-        console.log(this.route?.queryParams)
         this.handleRouteChange(this.route);
       });
   }
