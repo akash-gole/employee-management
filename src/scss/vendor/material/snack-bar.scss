@@ -16,3 +16,7 @@
 .mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
     color: var(--color-primary) !important;
 }
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+    justify-content: space-between !important;
+}

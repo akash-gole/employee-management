@@ -102,22 +102,21 @@ export class CustomHeaderComponent2 implements OnDestroy {
         break;
     }
 
-
     if (selectedDate) {
       this.calendar.activeDate = selectedDate;
       this.calendar.selected = selectedDate;
-      const syntheticEvent = new Event('dateSelected'); // Create a synthetic event
+      const syntheticEvent = new Event('dateSelected');
       this.calendar._userSelection.emit({
         value: selectedDate,
-        event: syntheticEvent, // You can pass a MouseEvent here if needed, otherwise null
+        event: syntheticEvent,
       });
       this.shareDataService.seteData(selectedDate);
     } else {
-      this.calendar.activeDate = null as unknown as Date; // Force null with TypeScript type casting
-      const syntheticEvent = new Event('dateSelected'); // Create a synthetic event
+      this.calendar.activeDate = null as unknown as Date;
+      const syntheticEvent = new Event('dateSelected');
       this.calendar._userSelection.emit({
         value: null,
-        event: syntheticEvent, // You can pass a MouseEvent here if needed, otherwise null
+        event: syntheticEvent,
       });
       this.shareDataService.seteData(null);
       this.calendar.selected = null;
@@ -128,13 +127,12 @@ export class CustomHeaderComponent2 implements OnDestroy {
   get periodLabel() {
     const date = this.calendar.activeDate;
     if (date) {
-        return `${date.getDate()} ${
-            this._dateAdapter.getMonthNames('short')[date.getMonth()]
-          } ${date.getFullYear()}`;
+      return `${date.getDate()} ${
+        this._dateAdapter.getMonthNames('short')[date.getMonth()]
+      } ${date.getFullYear()}`;
     } else {
-        return 'No date'
+      return 'No date';
     }
-    
   }
 
   previousClicked(mode: 'month' | 'year') {

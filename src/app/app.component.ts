@@ -1,35 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, first } from 'rxjs';
+import { filter } from 'rxjs';
+import { EmployeeDBService } from './services/employee-db.service';
+import { ShareDataService } from './services/share-data.service';
+import { ToastService } from './services/toast.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   headerTitle: string = '';
+  empId: number | null = null;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private employeeDBService: EmployeeDBService,
+    private shareDataService: ShareDataService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd)
-      )
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.handleRouteChange(this.route);
+        this.handleRouteChange(this.activatedRoute);
       });
   }
 
   private handleRouteChange(route: ActivatedRoute) {
     const child = this.getDeepestChild(route);
 
-    // Get the title from route data
     if (child.snapshot.data && child.snapshot.data['title']) {
       this.headerTitle = child.snapshot.data['title'];
     } else {
-      this.headerTitle = 'Employee List'; // Fallback if no title is provided
+      this.headerTitle = 'Employee List';
+    }
+
+    if (child.snapshot.params && child.snapshot.params['id']) {
+      this.empId = child.snapshot.params['id'];
     }
   }
 
@@ -38,5 +49,14 @@ export class AppComponent implements OnInit {
       route = route.firstChild;
     }
     return route;
+  }
+
+  deleteEmployee(id: number) {
+    console.log("id", id)
+    this.employeeDBService.deleteEmployee(+id).subscribe((data) => {
+      console.log("data", data)
+      this.toastService.show('Employee data has been deleted');
+      this.router.navigate(['/']);
+    });
   }
 }

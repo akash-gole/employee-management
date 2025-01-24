@@ -1,5 +1,9 @@
 import { Injectable, NgModule } from '@angular/core';
-import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  HAMMER_GESTURE_CONFIG,
+  HammerGestureConfig,
+} from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerModule, MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material/datepicker';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {
@@ -27,18 +31,7 @@ import { CustomHeaderComponent2 } from './component/custome-date-header/custome-
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import * as Hammer from 'hammerjs';
-
-// export const CUSTOM_DATE_FORMATS: MatDateFormats = {
-//   parse: {
-//     dateInput: 'd MMM yyyy',
-//   },
-//   display: {
-//     dateInput: 'd MMM yyyy',
-//     monthYearLabel: 'MMM yyyy',
-//     dateA11yLabel: 'LL',
-//     monthYearA11yLabel: 'MMMM yyyy',
-//   },
-// };
+import { Overlay, OverlayContainer, ScrollStrategyOptions } from '@angular/cdk/overlay';
 
 const dbConfig: DBConfig = {
   name: 'EmployeeDB',
@@ -60,7 +53,7 @@ const dbConfig: DBConfig = {
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
   override overrides = {
-    swipe: { direction: Hammer.DIRECTION_HORIZONTAL }, // Enable all swipe directions
+    swipe: { direction: Hammer.DIRECTION_HORIZONTAL },
   };
 }
 
@@ -73,7 +66,7 @@ const matmodules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatTableModule,
-  MatSnackBarModule
+  MatSnackBarModule,
 ];
 
 @NgModule({
@@ -82,7 +75,7 @@ const matmodules = [
     EmployeeListComponent,
     EmployeeFormComponent,
     CustomHeaderComponent,
-    CustomHeaderComponent2
+    CustomHeaderComponent2,
   ],
   imports: [
     BrowserModule,
@@ -95,11 +88,15 @@ const matmodules = [
     matmodules,
   ],
   providers: [
-    // { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
-    // { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }, // Optional: Set locale for consistent formatting
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig,
+    },
+    {
+      provide: MAT_DATEPICKER_SCROLL_STRATEGY,
+      useFactory: (overlay: Overlay) => () =>
+        overlay.scrollStrategies.block(),
+      deps: [Overlay],
     },
   ],
   bootstrap: [AppComponent],

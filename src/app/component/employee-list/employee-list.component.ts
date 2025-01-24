@@ -16,8 +16,8 @@ export class EmployeeListComponent implements OnInit {
   currentEmployees: Employee[] = [];
   previousEmployees: Employee[] = [];
   draggingIndex: number | null = null;
-  swipeThreshold = 1; // Threshold to delete the item
-  currentXPosition: number = 0; // Tracks the drag movement
+  swipeThreshold = 1;
+  currentXPosition: number = 0;
   longPressTimeout: any;
   constructor(
     private route: Router,
@@ -34,13 +34,8 @@ export class EmployeeListComponent implements OnInit {
     const xPosition = event.pointerPosition.x;
     const cardElement = event.source.element.nativeElement;
 
-    // Calculate the translation relative to the card's initial position
     const deltaX = xPosition - cardElement.offsetLeft;
-    // Update currentX position for this specific card
     emp.currentX = deltaX;
-    // cardEle
-    //
-    // ment.style.transform = `translateX(${deltaX}px)`;
   }
 
   onDragEnded(event: CdkDragEnd, index: number, emp: Employee) {
@@ -50,7 +45,6 @@ export class EmployeeListComponent implements OnInit {
       emp.isDeleting = true;
       cardElement.style.transform = 'translateX(-20%)'; // Show delete button
     } else {
-      // Reset position if the drag was too short
       emp.currentX = 0;
       emp.isDeleting = false;
       cardElement.style.transform = 'translateX(0)';
@@ -105,6 +99,5 @@ export class EmployeeListComponent implements OnInit {
 
   editEmployee(employee: any) {
     this.route.navigate(['add-employee', employee?.id]);
-    // Navigate to the edit form or open a modal
   }
 }

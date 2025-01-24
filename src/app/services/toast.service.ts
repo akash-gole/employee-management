@@ -9,16 +9,10 @@ export class ToastService {
   constructor(
     private snackBar: MatSnackBar,
     private shareDataService: ShareDataService,
-    private employeeDBService: EmployeeDBService,
+    private employeeDBService: EmployeeDBService
   ) {}
 
   show(message: string, action?: string) {
-    // this.snackBar.open(message, action, {
-    //   duration: 30000000000, // Adjust duration as needed
-    //   horizontalPosition: 'center',
-    //   verticalPosition: 'bottom',
-    // });
-
     const snackBarRef: MatSnackBarRef<any> = this.snackBar.open(
       message,
       action,
@@ -32,7 +26,9 @@ export class ToastService {
     snackBarRef.afterDismissed().subscribe((dismiss) => {
       if (dismiss.dismissedByAction) {
         // Revert the deletion logic here
-        this.employeeDBService.addEmployee(this.shareDataService.getDeletedData()).subscribe((id) => {
+        this.employeeDBService
+          .addEmployee(this.shareDataService.getDeletedData())
+          .subscribe((id) => {
             window.location.reload();
           });
       } else {

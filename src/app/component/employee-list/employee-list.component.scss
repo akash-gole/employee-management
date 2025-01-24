@@ -41,7 +41,7 @@
     }
 
     .swipe-to-delete {
-      align-items: center; /* Center text vertically */
+      align-items: center;
       background: #f0f0f0;
       border-top: 1px solid #ddd;
       padding: 1rem;
@@ -55,9 +55,6 @@
       border-bottom: 1px solid #e0e0e0;
       transition: transform 0.3s ease, opacity 0.3s ease;
 
-      .employee-details {
-        // width: 90%;
-      }
   
       .employee-details h4 {
         margin: 0;
@@ -72,9 +69,6 @@
 
       .delete-button {
         position: relative;
-        // right: 0;
-        // top: 0;
-        // height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -104,7 +98,7 @@
     }
 
     .employee-card.dragging {
-      transition: none; /* Disable transition while dragging */
+      transition: none;
     }
 
     

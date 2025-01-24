@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Inject, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Inject,
+  OnDestroy,
+} from '@angular/core';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
@@ -18,7 +25,9 @@ import { ShareDataService } from '../../services/share-data.service';
       <button mat-button (click)="setDate('afterWeek')">After 1 Week</button>
     </div>
     <div class="example-header">
-      <mat-icon matPrefix (click)="previousClicked('month')">arrow_left</mat-icon>
+      <mat-icon matPrefix (click)="previousClicked('month')"
+        >arrow_left</mat-icon
+      >
       <span class="example-header-label">{{ periodLabel }}</span>
       <mat-icon matPrefix (click)="nextClicked('month')">arrow_right</mat-icon>
     </div>
@@ -66,7 +75,7 @@ import { ShareDataService } from '../../services/share-data.service';
 })
 export class CustomHeaderComponent implements OnDestroy {
   private _destroyed = new Subject<void>();
-  shareDataService = inject(ShareDataService)
+  shareDataService = inject(ShareDataService);
   constructor(
     private calendar: MatCalendar<Date>,
     private _dateAdapter: DateAdapter<Date>,
@@ -104,11 +113,11 @@ export class CustomHeaderComponent implements OnDestroy {
 
     this.calendar.activeDate = selectedDate;
     this.calendar.selected = selectedDate;
-    const syntheticEvent = new Event('dateSelected'); // Create a synthetic event
+    const syntheticEvent = new Event('dateSelected');
     this.calendar._userSelection.emit({
-        value: selectedDate,
-        event: syntheticEvent, // You can pass a MouseEvent here if needed, otherwise null
-      });
+      value: selectedDate,
+      event: syntheticEvent,
+    });
     this.shareDataService.setsData(selectedDate);
   }
 
@@ -119,10 +128,11 @@ export class CustomHeaderComponent implements OnDestroy {
   }
 
   get periodLabel() {
-  const date = this.calendar.activeDate;
-  return `${date.getDate()} ${this._dateAdapter.getMonthNames('short')[date.getMonth()]} ${date.getFullYear()}`;
-}
-
+    const date = this.calendar.activeDate;
+    return `${date.getDate()} ${
+      this._dateAdapter.getMonthNames('short')[date.getMonth()]
+    } ${date.getFullYear()}`;
+  }
 
   previousClicked(mode: 'month' | 'year') {
     this.calendar.activeDate =

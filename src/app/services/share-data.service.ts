@@ -1,43 +1,40 @@
-import { Injectable, signal } from "@angular/core";
-import { Employee } from "../model/employee";
-
+import { Injectable, signal } from '@angular/core';
+import { Employee } from '../model/employee';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShareDataService {
+  sdata = signal<Date>(new Date());
+  edata = signal<Date | null>(null);
 
-    sdata = signal<Date>(new Date());
-    edata = signal<Date | null>(null);
+  nodate = signal<Boolean>(false);
 
-    nodate = signal<Boolean>(false);
+  deletedEmployee = signal<Employee | null>(null);
 
-    deletedEmployee = signal<Employee | null>(null)
-    
+  constructor() {}
 
-    constructor() {}
+  setsData(data: Date) {
+    this.sdata.update(() => data);
+  }
 
-    setsData(data:Date) {
-        this.sdata.update(()=> data);
-    }
+  getsData(): any {
+    return this.sdata();
+  }
 
-    getsData(): any {
-        return this.sdata();
-    }
+  seteData(data: Date | null) {
+    this.edata.update(() => data);
+  }
 
-    seteData(data:Date | null) {
-        this.edata.update(()=> data);
-    }
+  geteData(): any {
+    return this.edata();
+  }
 
-    geteData(): any {
-        return this.edata();
-    }
+  setDeletedData(data: Employee | null) {
+    this.deletedEmployee.update(() => data);
+  }
 
-    setDeletedData(data:Employee | null) {
-        this.deletedEmployee.update(()=> data);
-    }
-
-    getDeletedData(): any {
-        return this.deletedEmployee();
-    }
+  getDeletedData(): any {
+    return this.deletedEmployee();
+  }
 }

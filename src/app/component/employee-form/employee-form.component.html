@@ -35,9 +35,10 @@
         matInput
         placeholder="Today"
         [matDatepicker]="startPicker"
+        [matDatepickerFilter]="startDateFilter"
         formControlName="joinDate"
         [readonly]="true"
-        (click)="startPicker.open()" 
+        (click)="startPicker.open()"
       />
       <mat-datepicker-toggle
         matPrefix
@@ -48,7 +49,11 @@
           <div class="date-footer">
             <div class="selected-date-display">
               <mat-icon matPrefix>event_outlined</mat-icon>
-              {{ form.get('joinDate')?.value ? (form.get('joinDate')?.value | date : "d MMM yyyy") : "None" }}
+              {{
+                form.get("joinDate")?.value
+                  ? (form.get("joinDate")?.value | date : "d MMM yyyy")
+                  : "None"
+              }}
             </div>
             <div class="action-button">
               <button mat-button matDatepickerCancel class="button-secondary">
@@ -83,7 +88,7 @@
         placeholder="No Date"
         (dateChange)="onDateChange($event)"
         [readonly]="true"
-        (click)="endPicker.open()" 
+        (click)="endPicker.open()"
       />
       <mat-datepicker-toggle
         matPrefix
@@ -94,7 +99,11 @@
           <div class="date-footer">
             <div class="selected-date-display">
               <mat-icon matPrefix>event_outlined</mat-icon>
-              {{ form.get('lastDate')?.value ? (form.get('lastDate')?.value | date : "d MMM yyyy") : "None" }}
+              {{
+                form.get("lastDate")?.value
+                  ? (form.get("lastDate")?.value | date : "d MMM yyyy")
+                  : "None"
+              }}
             </div>
             <div class="action-button">
               <button mat-button matDatepickerCancel class="button-secondary">
