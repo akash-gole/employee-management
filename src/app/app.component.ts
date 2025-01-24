@@ -4,6 +4,7 @@ import { filter } from 'rxjs';
 import { EmployeeDBService } from './services/employee-db.service';
 import { ShareDataService } from './services/share-data.service';
 import { ToastService } from './services/toast.service';
+import { Employee } from './model/employee';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import { ToastService } from './services/toast.service';
 })
 export class AppComponent implements OnInit {
   headerTitle: string = '';
-  empId: number | null = null;
+  empData: Employee | null = null;
 
   constructor(
     private router: Router,
@@ -40,7 +41,9 @@ export class AppComponent implements OnInit {
     }
 
     if (child.snapshot.params && child.snapshot.params['id']) {
-      this.empId = child.snapshot.params['id'];
+      this.getData(child.snapshot.params['id']);
+    } else {
+      this.empData = null;
     }
   }
 
@@ -51,12 +54,17 @@ export class AppComponent implements OnInit {
     return route;
   }
 
-  deleteEmployee(id: number) {
-    console.log("id", id)
-    this.employeeDBService.deleteEmployee(+id).subscribe((data) => {
-      console.log("data", data)
-      this.toastService.show('Employee data has been deleted');
+  deleteEmployee(emp: any) {
+    this.employeeDBService.deleteEmployee(emp?.id).subscribe(() => {
+      this.shareDataService.setDeletedData(emp);
+      this.toastService.show('Employee data has been deleted', 'Undo');
       this.router.navigate(['/']);
+    });
+  }
+
+  getData(id: number) {
+    this.employeeDBService.getEmployeeById(+id).subscribe((data) => {
+      this.empData = data;
     });
   }
 }

@@ -1,5 +1,5 @@
 <mat-toolbar>
   <span>{{ headerTitle }}</span>
-  <mat-icon matPrefix *ngIf="empId" (click)="deleteEmployee(empId)">delete_outline</mat-icon>
+  <mat-icon matPrefix *ngIf="empData" (click)="deleteEmployee(empData)">delete_outline</mat-icon>
 </mat-toolbar>
 <router-outlet></router-outlet>
